@@ -129,18 +129,67 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.Character))]
+  public unsafe class CharacterPrototype : ComponentPrototype<Quantum.Character> {
+    public MapEntityId Entity;
+    public MapEntityId Owner;
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.Character component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.Character result, in PrototypeMaterializationContext context = default) {
+        PrototypeValidator.FindMapEntity(this.Entity, in context, out result.Entity);
+        PrototypeValidator.FindMapEntity(this.Owner, in context, out result.Owner);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Input))]
   public unsafe partial class InputPrototype : StructPrototype {
     public Button Left;
     public Button Right;
     public Button Up;
     public Button Fire;
+    public Byte MovementDirectionEncoded;
     partial void MaterializeUser(Frame frame, ref Quantum.Input result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.Input result, in PrototypeMaterializationContext context = default) {
         result.Left = this.Left;
         result.Right = this.Right;
         result.Up = this.Up;
         result.Fire = this.Fire;
+        result.MovementDirectionEncoded = this.MovementDirectionEncoded;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.Movement))]
+  public unsafe partial class MovementPrototype : ComponentPrototype<Quantum.Movement> {
+    public FPVector3 Direction;
+    public FP Speed;
+    partial void MaterializeUser(Frame frame, ref Quantum.Movement result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.Movement component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.Movement result, in PrototypeMaterializationContext context = default) {
+        result.Direction = this.Direction;
+        result.Speed = this.Speed;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.PlayerLink))]
+  public unsafe partial class PlayerLinkPrototype : ComponentPrototype<Quantum.PlayerLink> {
+    public PlayerRef PlayerRef;
+    partial void MaterializeUser(Frame frame, ref Quantum.PlayerLink result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.PlayerLink component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.PlayerLink result, in PrototypeMaterializationContext context = default) {
+        result.PlayerRef = this.PlayerRef;
         MaterializeUser(frame, ref result, in context);
     }
   }

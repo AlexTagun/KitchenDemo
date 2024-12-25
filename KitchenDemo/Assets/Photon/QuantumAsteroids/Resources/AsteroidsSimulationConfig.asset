@@ -44,9 +44,12 @@ MonoBehaviour:
       RawValue: 0
     MinAngularIntegration:
       RawValue: 0
+    MinContactInverseMass:
+      RawValue: 35
     SimplexMinBitShift: 0
     SimplexMaxBitShift: 2
     ShapeCastMaxIterations: 16
+    ShapeCastMinIterations: 4
     ShapeCastHardTolerance:
       RawValue: 655
     ShapeCastSoftTolerance:

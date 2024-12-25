@@ -1,0 +1,33 @@
+[CodeGen(UnityWrapperFolder, "Assets/Photon/QuantumKitchen/View/Generated")]
+component PlayerLink {
+    PlayerRef PlayerRef;
+}
+
+signal PlayerSpawned(EntityRef entityRef);
+signal PlayerDestroyed(EntityRef entityRef);
+
+input {
+	byte MovementDirectionEncoded;
+}
+
+synced event EntityInstantiated
+{
+	EntityRef Entity;
+}
+
+synced event EntityDestroyed
+{
+	EntityRef Entity;
+}
+
+component Character
+{
+    EntityRef Entity;
+    EntityRef Owner;
+}
+
+component Movement
+{
+    FPVector3 Direction;
+    FP Speed;
+}
